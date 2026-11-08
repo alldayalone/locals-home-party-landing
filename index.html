@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>locals. HOME PARTY</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #000;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .app-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Background video layer */
+    .video-bg-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .video-bg-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Layer overlaying the video background */
+    .content-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    /* Big greyish half-transparent toggle button in the top right */
+    .mute-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .mute-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(1.05);
+    }
+
+    /* Svg icon properties using a flat greyish tint */
+    .mute-btn svg {
+      width: 32px;
+      height: 32px;
+      fill: rgba(255, 255, 255, 0.75);
+      transition: fill 0.2s;
+    }
+
+    /* Typography overlay styling with a 4-second built-in fade-in delay */
+    .brand-heading {
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      font-size: 9rem;
+      color: #f6c324;
+      text-transform: lowercase;
+      letter-spacing: -3px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 0.85;
+      margin: 0;
+      user-select: none;
+      text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.5);
+      
+      /* Animation settings for the 4-second delay */
+      opacity: 0;
+      animation: fadeInTitle 1.5s ease-out 5s forwards;
+    }
+
+    .sub-heading {
+      font-family: 'Arial Black', sans-serif;
+      font-size: 2.2rem;
+      color: #f6c324;
+      letter-spacing: 5px;
+      margin-top: 15px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    /* CSS Keyframes for fading in the title */
+    @keyframes fadeInTitle {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .brand-heading { font-size: 5rem; letter-spacing: -1px; }
+      .sub-heading { font-size: 1.3rem; letter-spacing: 2px; }
+      .mute-btn { width: 54px; height: 54px; top: 16px; right: 16px; }
+      .mute-btn svg { width: 26px; height: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Big round toggle control container -->
+    <button id="audioToggle" class="mute-btn" aria-label="Toggle Mute">
+      <svg id="audioIcon" viewBox="0 0 24 24">
+        <!-- Rendered Muted State path default -->
+        <path id="iconPath" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM4 9v6h4l5 5V4L8 9H4zm16.5 3c0 3.32-2.11 6.16-5.06 7.22l1.09 1.09C20.08 19.34 22 15.9 22 12s-1.92-7.34-5.47-8.31l-1.09 1.09C18.39 5.84 20.5 8.68 20.5 12z" />
+      </svg>
+    </button>
+
+    <!-- Background video using your file target path -->
+    <div class="video-bg-container">
+      <video id="bgVideo" autoplay loop playsinline>
+        <source src="./locals-home-party-20-04-2019.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Typography canvas block -->
+    <div class="content-overlay">
+      <h1 class="brand-heading">
+        locals.
+        <span class="sub-heading">HOME PARTY</span>
+      </h1>
+    </div>
+
+  </div>
+
+  <script>
+    const video = document.getElementById('bgVideo');
+    const audioBtn = document.getElementById('audioToggle');
+    const iconPath = document.getElementById('iconPath');
+
+    const mutedPath = "M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM4 9v6h4l5 5V4L8 9H4zm16.5 3c0 3.32-2.11 6.16-5.06 7.22l1.09 1.09C20.08 19.34 22 15.9 22 12s-1.92-7.34-5.47-8.31l-1.09 1.09C18.39 5.84 20.5 8.68 20.5 12z";
+    const unmutedPath = "M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z";
+
+    audioBtn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      
+      if (video.muted) {
+        iconPath.setAttribute('d', unmutedPath);
+      } else {
+        iconPath.setAttribute('d', mutedPath);
+      }
+    });
+  </script>
+
+</body>
+</html>
